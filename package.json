@@ -1,0 +1,27 @@
+{
+  "name": "incoming-message-hash",
+  "version": "3.1.3",
+  "description": "Generate a one-way hash from an http.IncomingMessage",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test.js"
+  },
+  "keywords": [
+    "http",
+    "https",
+    "IncomingMessage",
+    "request",
+    "hash",
+    "md5",
+    "crypto",
+    "stream",
+    "fingerprint"
+  ],
+  "author": "Jeremy Ruppel",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "~2.4.5",
+    "supertest": "~1.1.0"
+  },
+  "dependencies": {}
+}
