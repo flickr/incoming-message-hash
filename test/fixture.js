@@ -1,6 +1,8 @@
 // Copyright 2016 Yahoo Inc.
 // Licensed under the terms of the MIT license. Please see LICENSE file in the project root for terms.
 
+var semver = require('semver');
+
 /**
  * nodejs changes the behavior of the http module slightly in various
  * releases; this module accounts for those changes in our test results.
@@ -30,3 +32,13 @@ exports['can use a different hash algorithm'] =
 
 exports['can use a different encoding'] =
   'CaPfk8lERhzuCZafKku4SA==';
+
+/**
+ * node >= 1.5.0 adds Content-Length: 0 to a POST when there is no body.
+ * @see https://github.com/nodejs/node/pull/1062
+ */
+
+if (semver.gte(process.version, '1.5.0')) {
+exports['produces a different hash for a different method'] =
+  '6db371c210f891e15229c3a9470da6a6';
+}
