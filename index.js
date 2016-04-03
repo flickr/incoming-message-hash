@@ -4,25 +4,43 @@
 var crypto = require('crypto');
 var url = require('url');
 
-module.exports = createHash;
+module.exports = createStream;
 
-function createHash(algorithm, encoding) {
-  var hash = crypto.createHash(algorithm || 'md5');
+function createStream(algorithm, encoding) {
+  var hash = createHash(algorithm);
+
+  hash.on('pipe', function (req) {
+    updateHash(hash, req);
+  });
 
   hash.setEncoding(encoding || 'hex');
 
-  hash.on('pipe', function (req) {
-    var parts = url.parse(req.url, true);
-
-    hash.update(req.httpVersion);
-    hash.update(req.method);
-    hash.update(parts.pathname);
-    hash.update(JSON.stringify(sort(parts.query)));
-    hash.update(JSON.stringify(sort(req.headers)));
-    hash.update(JSON.stringify(sort(req.trailers)));
-  });
-
   return hash;
+}
+
+createStream.sync = function (req, body, algorithm, encoding) {
+  var hash = createHash(algorithm);
+
+  updateHash(hash, req);
+
+  hash.write(body);
+
+  return hash.digest(encoding || 'hex');
+};
+
+function createHash(algorithm) {
+  return crypto.createHash(algorithm || 'md5');
+}
+
+function updateHash(hash, req) {
+  var parts = url.parse(req.url, true);
+
+  hash.update(req.httpVersion);
+  hash.update(req.method);
+  hash.update(parts.pathname);
+  hash.update(JSON.stringify(sort(parts.query)));
+  hash.update(JSON.stringify(sort(req.headers)));
+  hash.update(JSON.stringify(sort(req.trailers)));
 }
 
 function sort(obj) {

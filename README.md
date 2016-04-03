@@ -46,12 +46,16 @@ $ curl -X POST -d "yay" http://localhost:4567; echo
 var hash = require('incoming-message-hash');
 ```
 
-### hash(algorithm='md5', encoding='hex')
+### hash([algorithm='md5'[, encoding='hex']])
 
 Returns a new [crypto.Hash][] stream using the specified algorithm and encoding (defaults to "md5" and "hex"). You can pipe your [http.IncomingMessage][] in and get a hash back.
 
 [http.IncomingMessage]: https://nodejs.org/api/http.html#http_class_http_incomingmessage
 [crypto.Hash]: https://nodejs.org/api/crypto.html#crypto_class_hash
+
+### hash.sync(req, body, [algorithm='md5'[, encoding='hex']])
+
+Synchronous version of `hash()` that accepts the http.IncomingMessage and its body and returns the hash. You must buffer up the request body yourself if you wish to use this method.
 
 ## license
 
