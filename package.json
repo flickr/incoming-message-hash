@@ -1,6 +1,6 @@
 {
   "name": "incoming-message-hash",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "Generate a one-way hash from an http.IncomingMessage",
   "main": "index.js",
   "scripts": {
