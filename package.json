@@ -17,6 +17,10 @@
     "stream",
     "fingerprint"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:flickr/incoming-message-hash.git"
+  },
   "author": "Jeremy Ruppel",
   "license": "MIT",
   "devDependencies": {
