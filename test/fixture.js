@@ -28,7 +28,7 @@ exports['produces a different hash for a different post body'] =
   'e84cf2827fbc172a5957e3b29a1f47d5';
 
 exports['can use a different hash algorithm'] =
-  'd8b3b0f8af8babb29291719b3bbbaa45b1aaaa85'
+  'd8b3b0f8af8babb29291719b3bbbaa45b1aaaa85';
 
 exports['can use a different encoding'] =
   'CaPfk8lERhzuCZafKku4SA==';
