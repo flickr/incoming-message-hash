@@ -4,6 +4,7 @@
   "description": "Generate a one-way hash from an http.IncomingMessage",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint .",
     "test": "mocha"
   },
   "keywords": [
@@ -24,6 +25,8 @@
   "author": "Jeremy Ruppel",
   "license": "MIT",
   "devDependencies": {
+    "eslint": "~2.13.1",
+    "eslint-config-flickr": "~1.1.7",
     "mocha": "~2.4.5",
     "semver": "~5.1.0",
     "supertest": "~1.1.0"
