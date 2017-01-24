@@ -6,11 +6,11 @@ var url = require('url');
 
 module.exports = createStream;
 
-function createStream(algorithm, encoding) {
+function createStream(algorithm, encoding, ignore) {
   var hash = createHash(algorithm);
 
   hash.on('pipe', function (req) {
-    updateHash(hash, req);
+    updateHash(hash, req, ignore);
   });
 
   hash.setEncoding(encoding || 'hex');
@@ -18,10 +18,10 @@ function createStream(algorithm, encoding) {
   return hash;
 }
 
-createStream.sync = function (req, body, algorithm, encoding) {
+createStream.sync = function (req, body, algorithm, encoding, ignore) {
   var hash = createHash(algorithm);
 
-  updateHash(hash, req);
+  updateHash(hash, req, ignore);
 
   hash.write(body);
 
@@ -32,8 +32,14 @@ function createHash(algorithm) {
   return crypto.createHash(algorithm || 'md5');
 }
 
-function updateHash(hash, req) {
+function updateHash(hash, req, ignore) {
   var parts = url.parse(req.url, true);
+
+  if (ignore) {
+    for (let param in ignore) {
+      delete parts.query[ignore[param]];
+    }
+  }
 
   hash.update(req.httpVersion);
   hash.update(req.method);

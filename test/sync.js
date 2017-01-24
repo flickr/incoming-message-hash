@@ -8,7 +8,7 @@ var harness = require('./harness');
 
 describe('sync', function () {
 
-  function app(algorithm, encoding) {
+  function app(algorithm, encoding, ignore) {
     return function (req, res) {
       var body = '';
 
@@ -17,7 +17,7 @@ describe('sync', function () {
       });
 
       req.on('end', function () {
-        res.end(subject.sync(req, body, algorithm, encoding));
+        res.end(subject.sync(req, body, algorithm, encoding, ignore));
       });
     };
   }

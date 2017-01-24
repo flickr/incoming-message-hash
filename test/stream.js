@@ -8,9 +8,9 @@ var harness = require('./harness');
 
 describe('stream', function () {
 
-  function app(algorithm, encoding) {
+  function app(algorithm, encoding, ignore) {
     return function (req, res) {
-      req.pipe(subject(algorithm, encoding)).pipe(res);
+      req.pipe(subject(algorithm, encoding, ignore)).pipe(res);
     };
   }
 

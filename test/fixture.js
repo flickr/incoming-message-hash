@@ -33,6 +33,8 @@ exports['can use a different hash algorithm'] =
 exports['can use a different encoding'] =
   'CaPfk8lERhzuCZafKku4SA==';
 
+exports['can ignore GET changing values'] = '09a3df93c944461cee09969f2a4bb848';
+
 /**
  * node >= 1.5.0 adds Content-Length: 0 to a POST when there is no body.
  * @see https://github.com/nodejs/node/pull/1062

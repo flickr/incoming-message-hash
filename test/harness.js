@@ -70,6 +70,16 @@ module.exports = function (app) {
     .expect(fixture[this.test.title], done);
   });
 
+  it('can ignore GET changing values', function (done) {
+      var timestamp = new Date();
+      var rand = Math.random();
+
+      request(app(null, null, ['rand', 'timestamp']))
+      .get('/?rand=' + rand + '&timestamp=' + timestamp)
+      .set('host', 'localhost:4567')
+      .expect(fixture[this.test.title], done);
+  });
+
   it('can use a different encoding', function (done) {
     request(app('md5', 'base64'))
     .get('/')
