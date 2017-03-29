@@ -55,6 +55,18 @@ module.exports = function (app) {
     .expect(fixture[this.test.title], done);
   });
 
+  it('produces the same hash for different headers if excludeHeaders option is specified', function (done) {
+    request(app({
+      excludeHeaders: [
+        'x-foo'
+      ]
+    }))
+    .get('/')
+    .set('host', 'localhost:4567')
+    .set('x-foo', 'bar')
+    .expect(fixture[this.test.title], done);
+  });
+
   it('produces a different hash for a different post body', function (done) {
     request(app())
     .post('/')
@@ -64,14 +76,14 @@ module.exports = function (app) {
   });
 
   it('can use a different hash algorithm', function (done) {
-    request(app('sha1'))
+    request(app({ algorithm: 'sha1' }))
     .get('/')
     .set('host', 'localhost:4567')
     .expect(fixture[this.test.title], done);
   });
 
   it('can use a different encoding', function (done) {
-    request(app('md5', 'base64'))
+    request(app({ encoding: 'base64' }))
     .get('/')
     .set('host', 'localhost:4567')
     .expect(fixture[this.test.title], done);

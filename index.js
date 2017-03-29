@@ -6,34 +6,49 @@ var url = require('url');
 
 module.exports = createStream;
 
-function createStream(algorithm, encoding) {
-  var hash = createHash(algorithm);
+function createStream(options) {
+
+  var options = options || {};
+
+  var hash = createHash(options.algorithm);
 
   hash.on('pipe', function (req) {
-    updateHash(hash, req);
+    updateHash(hash, req, options || {});
   });
 
-  hash.setEncoding(encoding || 'hex');
+  hash.setEncoding(options.encoding || 'hex');
 
   return hash;
 }
 
-createStream.sync = function (req, body, algorithm, encoding) {
-  var hash = createHash(algorithm);
+createStream.sync = function (req, body, options) {
 
-  updateHash(hash, req);
+  var options = options || {};
+
+  var hash = createHash(options.algorithm);
+
+  updateHash(hash, req, options);
 
   hash.write(body);
 
-  return hash.digest(encoding || 'hex');
+  return hash.digest(options.encoding || 'hex');
 };
 
 function createHash(algorithm) {
   return crypto.createHash(algorithm || 'md5');
 }
 
-function updateHash(hash, req) {
+function updateHash(hash, req, options) {
+
   var parts = url.parse(req.url, true);
+
+  if (options.excludeHeaders) {
+    for (var key in req.headers) {
+      if (options.excludeHeaders.includes(key)) {
+        delete req.headers[key]
+      }
+    }
+  }
 
   hash.update(req.httpVersion);
   hash.update(req.method);
