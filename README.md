@@ -59,7 +59,7 @@ Returns a new [crypto.Hash][] stream using the specified algorithm and encoding 
 [http.IncomingMessage]: https://nodejs.org/api/http.html#http_class_http_incomingmessage
 [crypto.Hash]: https://nodejs.org/api/crypto.html#crypto_class_hash
 
-### hash.sync(req, body, [algorithm='md5'[, encoding='hex']])
+### hash.sync(req, body, [options])
 
 Synchronous version of `hash()` that accepts the http.IncomingMessage and its body and returns the hash. You must buffer up the request body yourself if you wish to use this method.
 
