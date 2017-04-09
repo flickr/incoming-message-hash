@@ -46,14 +46,20 @@ $ curl -X POST -d "yay" http://localhost:4567; echo
 var hash = require('incoming-message-hash');
 ```
 
-### hash([algorithm='md5'[, encoding='hex']])
+### hash([options])
 
-Returns a new [crypto.Hash][] stream using the specified algorithm and encoding (defaults to "md5" and "hex"). You can pipe your [http.IncomingMessage][] in and get a hash back.
+Returns a new [crypto.Hash][] stream using the specified algorithm and encoding (defaults to "md5" and "hex"). You can pipe your [http.IncomingMessage][] in and get a hash back. You can also specify which headers should be excluded when creating the hash.
+
+#### options
+
+- `algorithm` the algorithm to use when hashing
+- `encoding` the encoding to use when hashing
+- `excludeHeaders` an array of headers that should be excluded from the hash
 
 [http.IncomingMessage]: https://nodejs.org/api/http.html#http_class_http_incomingmessage
 [crypto.Hash]: https://nodejs.org/api/crypto.html#crypto_class_hash
 
-### hash.sync(req, body, [algorithm='md5'[, encoding='hex']])
+### hash.sync(req, body, [options])
 
 Synchronous version of `hash()` that accepts the http.IncomingMessage and its body and returns the hash. You must buffer up the request body yourself if you wish to use this method.
 

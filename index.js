@@ -6,40 +6,74 @@ var url = require('url');
 
 module.exports = createStream;
 
-function createStream(algorithm, encoding) {
-  var hash = createHash(algorithm);
+function ConflictingOptionsError(message) {
+  this.message = message;
+}
+
+ConflictingOptionsError.prototype = Object.create(Error.prototype);
+
+function createStream(options) {
+
+  var options = options || {};
+
+  if (options.includeHeaders && options.excludeHeaders) {
+    throw new ConflictingOptionsError('Can\'t have both includeHeaders and excludeHeaders in options')
+  }
+
+  var hash = createHash(options.algorithm);
 
   hash.on('pipe', function (req) {
-    updateHash(hash, req);
+    updateHash(hash, req, options || {});
   });
 
-  hash.setEncoding(encoding || 'hex');
+  hash.setEncoding(options.encoding || 'hex');
 
   return hash;
 }
 
-createStream.sync = function (req, body, algorithm, encoding) {
-  var hash = createHash(algorithm);
+createStream.sync = function (req, body, options) {
 
-  updateHash(hash, req);
+  var options = options || {};
+
+  var hash = createHash(options.algorithm);
+
+  updateHash(hash, req, options);
 
   hash.write(body);
 
-  return hash.digest(encoding || 'hex');
+  return hash.digest(options.encoding || 'hex');
 };
 
 function createHash(algorithm) {
   return crypto.createHash(algorithm || 'md5');
 }
 
-function updateHash(hash, req) {
+function updateHash(hash, req, options) {
+
   var parts = url.parse(req.url, true);
+
+  var headers = JSON.parse(JSON.stringify(req.headers));
+
+  if (options.excludeHeaders) {
+    for (var key in headers) {
+      if (options.excludeHeaders.includes(key)) {
+        delete headers[key]
+      }
+    }
+  }
+  if (options.includeHeaders) {
+    for (var key in headers) {
+      if (!options.includeHeaders.includes(key)) {
+        delete headers[key]
+      }
+    }
+  }
 
   hash.update(req.httpVersion);
   hash.update(req.method);
   hash.update(parts.pathname);
   hash.update(JSON.stringify(sort(parts.query)));
-  hash.update(JSON.stringify(sort(req.headers)));
+  hash.update(JSON.stringify(sort(headers)));
   hash.update(JSON.stringify(sort(req.trailers)));
 }
 
