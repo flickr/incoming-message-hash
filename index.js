@@ -6,9 +6,19 @@ var url = require('url');
 
 module.exports = createStream;
 
+function ConflictingOptionsError(message) {
+  this.message = message;
+}
+
+ConflictingOptionsError.prototype = Object.create(Error.prototype);
+
 function createStream(options) {
 
   var options = options || {};
+
+  if (options.includeHeaders && options.excludeHeaders) {
+    throw new ConflictingOptionsError('Can\'t have both includeHeaders and excludeHeaders in options')
+  }
 
   var hash = createHash(options.algorithm);
 
@@ -42,10 +52,19 @@ function updateHash(hash, req, options) {
 
   var parts = url.parse(req.url, true);
 
+  var headers = JSON.parse(JSON.stringify(req.headers));
+
   if (options.excludeHeaders) {
-    for (var key in req.headers) {
+    for (var key in headers) {
       if (options.excludeHeaders.includes(key)) {
-        delete req.headers[key]
+        delete headers[key]
+      }
+    }
+  }
+  if (options.includeHeaders) {
+    for (var key in headers) {
+      if (!options.includeHeaders.includes(key)) {
+        delete headers[key]
       }
     }
   }
@@ -54,7 +73,7 @@ function updateHash(hash, req, options) {
   hash.update(req.method);
   hash.update(parts.pathname);
   hash.update(JSON.stringify(sort(parts.query)));
-  hash.update(JSON.stringify(sort(req.headers)));
+  hash.update(JSON.stringify(sort(headers)));
   hash.update(JSON.stringify(sort(req.trailers)));
 }
 

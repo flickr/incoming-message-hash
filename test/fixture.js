@@ -27,6 +27,9 @@ exports['produces a different hash for different headers'] =
 exports['produces the same hash for different headers if excludeHeaders option is specified'] =
   '09a3df93c944461cee09969f2a4bb848';
 
+exports['produces the same hash for different headers if includeHeaders option is specified'] =
+  '09a3df93c944461cee09969f2a4bb848';
+
 exports['produces a different hash for a different post body'] =
   'e84cf2827fbc172a5957e3b29a1f47d5';
 

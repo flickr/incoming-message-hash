@@ -67,6 +67,21 @@ module.exports = function (app) {
     .expect(fixture[this.test.title], done);
   });
 
+  it('produces the same hash for different headers if includeHeaders option is specified', function (done) {
+    request(app({
+      includeHeaders: [
+        'host',
+        'accept-encoding',
+        'user-agent',
+        'connection'
+      ]
+    }))
+    .get('/')
+    .set('host', 'localhost:4567')
+    .set('x-foo', 'bar')
+    .expect(fixture[this.test.title], done);
+  });
+
   it('produces a different hash for a different post body', function (done) {
     request(app())
     .post('/')
