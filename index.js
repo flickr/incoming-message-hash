@@ -20,10 +20,7 @@ function createStream(algorithm, encoding) {
 
 createStream.sync = function (req, body, algorithm, encoding) {
   var hash = createHash(algorithm);
-
-  updateHash(hash, req);
-
-  hash.write(body);
+  updateHash(hash, req, body);
 
   return hash.digest(encoding || 'hex');
 };
@@ -32,7 +29,7 @@ function createHash(algorithm) {
   return crypto.createHash(algorithm || 'md5');
 }
 
-function updateHash(hash, req) {
+function updateHash(hash, req, body) {
   var parts = url.parse(req.url, true);
 
   hash.update(req.httpVersion);
@@ -41,6 +38,8 @@ function updateHash(hash, req) {
   hash.update(JSON.stringify(sort(parts.query)));
   hash.update(JSON.stringify(sort(req.headers)));
   hash.update(JSON.stringify(sort(req.trailers)));
+
+  hash.update(body);
 }
 
 function sort(obj) {
