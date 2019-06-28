@@ -29,7 +29,7 @@
     "eslint-config-flickr": "~1.1.7",
     "mocha": "~2.4.5",
     "semver": "~5.1.0",
-    "supertest": "~1.1.0"
+    "supertest": "^4.0.2"
   },
   "dependencies": {}
 }
