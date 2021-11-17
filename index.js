@@ -28,6 +28,26 @@ createStream.sync = function (req, body, algorithm, encoding) {
   return hash.digest(encoding || 'hex');
 };
 
+createStream.promise = function (req, algorithm, encoding) {
+  var hash = createHash(algorithm);
+
+  updateHash(hash, req);
+
+  return new Promise(function (resolve, reject) {
+    req.on('error', function (err) {
+      reject(err);
+    });
+
+    req.on('data', function (data) {
+      hash.write(data);
+    });
+
+    req.on('end', function () {
+      resolve(hash.digest(encoding || 'hex'));
+    });
+  });
+};
+
 function createHash(algorithm) {
   return crypto.createHash(algorithm || 'md5');
 }
