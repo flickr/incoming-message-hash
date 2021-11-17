@@ -3,6 +3,9 @@
   "version": "4.0.0",
   "description": "Generate a one-way hash from an http.IncomingMessage",
   "main": "index.js",
+  "engines": {
+    "node": ">=12"
+  },
   "scripts": {
     "lint": "eslint .",
     "test": "mocha"
@@ -28,7 +31,6 @@
     "eslint": "^8.2.0",
     "eslint-config-flickr": "^2.0.1",
     "mocha": "^9.1.3",
-    "semver": "~5.1.0",
     "supertest": "^6.1.6"
   },
   "dependencies": {}

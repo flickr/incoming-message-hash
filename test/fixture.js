@@ -1,7 +1,7 @@
 // Copyright 2021 SmugMug, Inc.
 // Licensed under the terms of the MIT license. Please see LICENSE file in the project root for terms.
 
-var semver = require('semver');
+// var semver = require('semver');
 
 /**
  * nodejs changes the behavior of the http module slightly in various
@@ -19,7 +19,7 @@ exports['produces the same hash for different ordered query params'] =
   '2f8a8a2c8b6f286e65848160ba8c6ab1';
 
 exports['produces a different hash for a different method'] =
-  '31c4e9ea422c968d96092259bdca158e';
+  '6db371c210f891e15229c3a9470da6a6';
 
 exports['produces a different hash for different headers'] =
   '46e486ddb60f2236f77c8bbe29d6c760';
@@ -32,13 +32,3 @@ exports['can use a different hash algorithm'] =
 
 exports['can use a different encoding'] =
   'CaPfk8lERhzuCZafKku4SA==';
-
-/**
- * node >= 1.5.0 adds Content-Length: 0 to a POST when there is no body.
- * @see https://github.com/nodejs/node/pull/1062
- */
-
-if (semver.gte(process.version, '1.5.0')) {
-exports['produces a different hash for a different method'] =
-  '6db371c210f891e15229c3a9470da6a6';
-}
