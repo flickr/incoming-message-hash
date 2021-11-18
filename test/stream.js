@@ -3,8 +3,8 @@
 
 /* eslint-env mocha */
 
-var subject = require('..');
-var harness = require('./harness');
+import subject from '../index.js';
+import harness from './harness.js';
 
 describe('stream', function () {
 

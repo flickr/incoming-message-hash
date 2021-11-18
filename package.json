@@ -3,6 +3,7 @@
   "version": "4.1.0",
   "description": "Generate a one-way hash from an http.IncomingMessage",
   "main": "index.js",
+  "type": "module",
   "engines": {
     "node": ">=12"
   },

@@ -3,8 +3,8 @@
 
 /* eslint-env mocha */
 
-var subject = require('..');
-var harness = require('./harness');
+import { sync } from '../index.js';
+import harness from './harness.js';
 
 describe('sync', function () {
 
@@ -17,7 +17,7 @@ describe('sync', function () {
       });
 
       req.on('end', function () {
-        res.end(subject.sync(req, body, algorithm, encoding));
+        res.end(sync(req, body, algorithm, encoding));
       });
     };
   }
