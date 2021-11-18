@@ -10,6 +10,9 @@
     "lint": "eslint .",
     "test": "mocha"
   },
+  "files": [
+    "index.js"
+  ],
   "keywords": [
     "http",
     "https",
