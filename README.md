@@ -13,14 +13,14 @@ $ npm install incoming-message-hash --save
 This example demonstrates how the hashing function returns a different hash based on the IncomingMessage's method, path, query string, headers and body.
 
 ``` js
-var hash = require('incoming-message-hash');
-var http = require('http');
+import hash from 'incoming-message-hash'
+import { createServer } from 'http'
 
-http.createServer(function (req, res) {
-  req.pipe(hash()).pipe(res);
-}).listen(4567, function () {
+createServer((req, res) => {
+  req.pipe(hash()).pipe(res)
+}).listen(4567, () => {
   console.log('Server is listening on port 4567');
-});
+})
 ```
 
 ``` bash
@@ -50,15 +50,47 @@ var hash = require('incoming-message-hash');
 
 Returns a new [crypto.Hash][] stream using the specified algorithm and encoding (defaults to "md5" and "hex"). You can pipe your [http.IncomingMessage][] in and get a hash back.
 
+```js
+import hash from 'incoming-message-hash'
+import { createServer } from 'http'
+
+createServer((req, res) => {
+  req.pipe(hash()).pipe(res)
+})
+```
 
 ### hash.sync(req, body[, algorithm='md5'[, encoding='hex']])
 
 Synchronous version of `hash()` that accepts an [http.IncomingMessage][] and its body and returns the hash. You must buffer up the request body yourself if you wish to use this method.
 
+```js
+import { promise } from 'incoming-message-hash'
+import { createServer } from 'http'
+
+createServer(async function (req, res) {
+  let body = ''
+
+  req.on('data', chunk => body += String(chunk))
+
+  req.on('end', () => {
+    res.end(sync(req, body))
+  })
+})
+```
+
 ### hash.promise(req[, algorithm='md5'[, encoding='hex]])
 
 Asynchronous version of `hash()` that accepts an [http.IncomingMessage][] and
 buffers the body up for you.
+
+```js
+import { promise } from 'incoming-message-hash'
+import { createServer } from 'http'
+
+createServer(async (req, res) => {
+  res.end(await promise(req))
+})
+```
 
 ## license
 

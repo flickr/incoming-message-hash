@@ -3,14 +3,14 @@
 
 /* eslint-env mocha */
 
-var subject = require('..');
-var harness = require('./harness');
+import { promise } from '../index.js';
+import harness from './harness.js';
 
 describe('promise', function () {
 
   function app(algorithm, encoding) {
     return async function (req, res) {
-      res.end(await subject.promise(req, algorithm, encoding));
+      res.end(await promise(req, algorithm, encoding));
     };
   }
 

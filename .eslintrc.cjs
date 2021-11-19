@@ -8,6 +8,7 @@ module.exports = {
   },
 
   parserOptions: {
+    sourceType: 'module',
     ecmaVersion: 8
   },
 
